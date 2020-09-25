@@ -23,12 +23,15 @@ public class UserController {
 	@PostMapping(path="/add")
 	public @ResponseBody String addNewUser (@RequestBody AddUser addUser) {
 		
-		User user = new User();
-		user.setUsername(addUser.getUsername());
-		user.setPassword(addUser.getPassword());
-		userRepository.save(user);
+		if(!userRepository.existsByUsername(addUser.getUsername())) {
+			User user = new User();
+			user.setUsername(addUser.getUsername());
+			user.setPassword(addUser.getPassword());
+			userRepository.save(user);
+			return "Saved";
+		}
 		
-		return "Saved";
+		return "User already exists";
 	}
 	
 }

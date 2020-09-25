@@ -1,5 +1,7 @@
 # 9laugh
 
+# Build Info
+
 ## Spring / Spring boot project
 
 ## Requirements
@@ -20,3 +22,29 @@ Create the database user and set their password
 	create user '9laughUser'@'%' identified by '9laughPassword';
 Give user the necessary privileges
 	grant all on 9laugh.* to '9laughUser'@'%';
+	
+# Concept info
+
+## Entities
+
+### User (id, username, password)
+- Add new user (user creates account)
+- Remove existing user (user deletes their account)
+
+### Post (id, userId(uploader), tag, title, description, src, upvotes, downvotes)
+As user you can:
+- Add post (user uploads post)
+- Remove post (user removes post)
+- Get your posts
+- Select post (from any user)
+
+
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-package com.john_deligiannis.laugh_9.requestBodies;
+package com.john_deligiannis.laugh_9.bodies;
 
 public class AddUser {
 

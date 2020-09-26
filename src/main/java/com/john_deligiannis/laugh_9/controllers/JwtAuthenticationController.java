@@ -20,8 +20,7 @@ import com.john_deligiannis.laugh_9.bodies.JwtResponse;
 import com.john_deligiannis.laugh_9.config.JwtTokenUtil;
 import com.john_deligiannis.laugh_9.service.JwtUserDetailsService;
 
-@Controller
-@RequestMapping(path="/user")
+@RestController
 @CrossOrigin
 public class JwtAuthenticationController {
 	
@@ -34,7 +33,7 @@ public class JwtAuthenticationController {
 	@Autowired
 	private JwtUserDetailsService jwtUserDetailsService;
 	
-	@PostMapping(path="/authenticate")
+	@RequestMapping(value="/authenticate", method=RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 		

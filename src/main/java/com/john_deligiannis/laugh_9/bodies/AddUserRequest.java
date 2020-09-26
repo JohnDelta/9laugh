@@ -1,11 +1,11 @@
 package com.john_deligiannis.laugh_9.bodies;
 
-public class AddUser {
+public class AddUserRequest {
 
 	private String username;
 	private String password;
 	
-	public AddUser(String username, String password) {
+	public AddUserRequest(String username, String password) {
 		super();
 		this.username = username;
 		this.password = password;

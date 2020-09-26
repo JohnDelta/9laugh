@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.john_deligiannis.laugh_9.bodies.JwtRequest;
 import com.john_deligiannis.laugh_9.bodies.JwtResponse;
-import com.john_deligiannis.laugh_9.config.JwtTokenUtil;
-import com.john_deligiannis.laugh_9.service.JwtUserDetailsService;
+import com.john_deligiannis.laugh_9.security_config.JwtTokenUtil;
+import com.john_deligiannis.laugh_9.security_config.JwtUserDetailsService;
 
 @RestController
 @CrossOrigin

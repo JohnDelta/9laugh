@@ -1,4 +1,4 @@
-package com.john_deligiannis.laugh_9.config;
+package com.john_deligiannis.laugh_9.security_config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

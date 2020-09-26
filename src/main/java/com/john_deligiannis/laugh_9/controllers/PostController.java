@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.john_deligiannis.laugh_9.bodies.AddPostRequest;
 import com.john_deligiannis.laugh_9.bodies.DeletePostRequest;
-import com.john_deligiannis.laugh_9.config.JwtTokenUtil;
 import com.john_deligiannis.laugh_9.entities.Post;
 import com.john_deligiannis.laugh_9.entities.User;
 import com.john_deligiannis.laugh_9.repositories.PostRepository;
 import com.john_deligiannis.laugh_9.repositories.UserRepository;
+import com.john_deligiannis.laugh_9.security_config.JwtTokenUtil;
 
 @Controller
 @RequestMapping(path="/post")

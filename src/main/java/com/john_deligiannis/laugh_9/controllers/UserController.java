@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.john_deligiannis.laugh_9.repositories.UserRepository;
-
+import com.john_deligiannis.laugh_9.security_config.JwtTokenUtil;
 import com.john_deligiannis.laugh_9.bodies.AddUserRequest;
-import com.john_deligiannis.laugh_9.config.JwtTokenUtil;
 import com.john_deligiannis.laugh_9.entities.User;
 
 @Controller

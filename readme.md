@@ -15,6 +15,7 @@
 - MySQL Driver
 - json web token
 - spring boot starter security
+- spring boot starter thymeleaf
 
 ## Setup the MySQL Database (User: 9laughUser, Password: 9laughPassword)
 - Server: localhost:3306, change it from src/main/resources/application.properties if you use different

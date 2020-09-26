@@ -1,4 +1,4 @@
-package com.john_deligiannis.laugh_9.config;
+package com.john_deligiannis.laugh_9.security_config;
 
 
 import java.io.IOException;
@@ -14,8 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import com.john_deligiannis.laugh_9.service.JwtUserDetailsService;
 
 import io.jsonwebtoken.ExpiredJwtException;
 

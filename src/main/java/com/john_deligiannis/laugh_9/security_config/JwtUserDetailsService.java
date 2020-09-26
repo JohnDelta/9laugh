@@ -1,4 +1,4 @@
-package com.john_deligiannis.laugh_9.service;
+package com.john_deligiannis.laugh_9.security_config;
 
 import java.util.Collection;
 

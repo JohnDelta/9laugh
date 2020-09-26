@@ -26,7 +26,7 @@ public class UserController {
 	private JwtTokenUtil jwtTokenUtil;
 	
 	@PostMapping(path="/add")
-	public @ResponseBody String addNewUser (@RequestBody AddUserRequest addUserRequest) {
+	public @ResponseBody String addUser (@RequestBody AddUserRequest addUserRequest) {
 		
 		if(userRepository.findByUsername(addUserRequest.getUsername()) == null) {
 			User user = new User();
@@ -44,7 +44,7 @@ public class UserController {
 	}
 	
 	@PostMapping(path="/delete")
-	public @ResponseBody String removeUser (
+	public @ResponseBody String deleteUser (
 			@RequestHeader("Authorization") String tokenHeader
 	) {
 		String jwtToken = tokenHeader.substring(7);

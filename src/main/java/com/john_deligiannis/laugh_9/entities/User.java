@@ -1,23 +1,36 @@
 package com.john_deligiannis.laugh_9.entities;
 
+import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
-@Entity
+@Entity(name="user")
 public class User {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer userId;
 	
+	@OneToMany(mappedBy="user")
+	private List<Post> posts;
+	
+	@Column(nullable=false)
 	private String username;
 	
+	@Column(nullable=false)
 	private String password;
 	
 	public Integer getUserId() {
 		return userId;
+	}
+	
+	public List<Post> getPosts() {
+		return posts;
 	}
 	
 	public String getUsername() {
@@ -30,6 +43,10 @@ public class User {
 	
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+	
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
 	}
 	
 	public void setUsername(String username) {

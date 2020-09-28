@@ -14,7 +14,7 @@ import com.john_deligiannis.laugh_9.storage.StorageFileNotFoundException;
 import com.john_deligiannis.laugh_9.storage.StorageService;
 
 @Controller
-@RequestMapping(path="/file")
+@RequestMapping(path="api/file")
 public class FileUploadController {
 
 	private final StorageService storageService;

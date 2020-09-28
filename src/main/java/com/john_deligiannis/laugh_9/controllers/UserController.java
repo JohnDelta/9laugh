@@ -15,7 +15,7 @@ import com.john_deligiannis.laugh_9.bodies.AddUserRequest;
 import com.john_deligiannis.laugh_9.entities.User;
 
 @Controller
-@RequestMapping(path="/user")
+@RequestMapping(path="api/user")
 public class UserController {
 
 	@Autowired

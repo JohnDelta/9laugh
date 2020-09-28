@@ -19,7 +19,7 @@ import com.john_deligiannis.laugh_9.repositories.UserRepository;
 import com.john_deligiannis.laugh_9.security_config.JwtTokenUtil;
 
 @Controller
-@RequestMapping(path="/post")
+@RequestMapping(path="api/post")
 public class PostController {
 
 	@Autowired

@@ -13,7 +13,7 @@ public class Post {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer postId;
+	private Long postId;
 	
 	@ManyToOne
 	@JoinColumn(name="userId")
@@ -25,19 +25,22 @@ public class Post {
 	@Column(nullable=false)
 	private String title;
 	
-	@Column(nullable=false)
-	private String description;
+	@Column(nullable=true)
+	private String popularity;
 	
 	@Column(nullable=false)
 	private String mediaSource;
 	
 	@Column(nullable=true)
-	private Integer upvotes;
+	private Long upvotes;
 	
 	@Column(nullable=true)
-	private Integer downvotes;
+	private Long downvotes;
 	
-	public Integer getPostId() {
+	@Column(nullable=false)
+	private Long date;
+	
+	public Long getPostId() {
 		return postId;
 	}
 	
@@ -53,23 +56,27 @@ public class Post {
 		return title;
 	}
 	
-	public String getDescription() {
-		return description;
+	public String getPopularity() {
+		return popularity;
 	}
 	
 	public String getMediaSource() {
 		return mediaSource;
 	}
 	
-	public Integer getUpvotes() {
+	public Long getUpvotes() {
 		return upvotes;
 	}
 	
-	public Integer getDownvotes() {
+	public Long getDownvotes() {
 		return downvotes;
 	}
 	
-	public void setPostId(Integer postId) {
+	public Long getDate() {
+		return date;
+	}
+	
+	public void setPostId(Long postId) {
 		this.postId = postId;
 	}
 	
@@ -85,20 +92,24 @@ public class Post {
 		this.title = title;
 	}
 	
-	public void setDescription(String description) {
-		this.description = description;
+	public void setPopularity(String popularity) {
+		this.popularity = popularity;
 	}
 	
 	public void setMediaSource(String mediaSource) {
 		this.mediaSource = mediaSource;
 	}
 	
-	public void setUpvotes(Integer upvotes) {
+	public void setUpvotes(Long upvotes) {
 		this.upvotes = upvotes;
 	}
 	
-	public void setDownvotes(Integer downvotes) {
+	public void setDownvotes(Long downvotes) {
 		this.downvotes = downvotes;
+	}
+	
+	public void setDate(Long date) {
+		this.date = date;
 	}
 	
 }

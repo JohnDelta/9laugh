@@ -14,7 +14,7 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer userId;
+	private Long userId;
 	
 	@OneToMany(mappedBy="user")
 	private List<Post> posts;
@@ -25,7 +25,7 @@ public class User {
 	@Column(nullable=false)
 	private String password;
 	
-	public Integer getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 	
@@ -41,7 +41,7 @@ public class User {
 		return password;
 	}
 	
-	public void setUserId(Integer userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 	

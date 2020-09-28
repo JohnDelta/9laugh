@@ -4,7 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.john_deligiannis.laugh_9.entities.*;
 
-public interface UserRepository extends CrudRepository<User, Integer> {
+public interface UserRepository extends CrudRepository<User, Long> {
 	
 	User findByUsername(String username);
 

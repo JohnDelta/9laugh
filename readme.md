@@ -1,4 +1,6 @@
-# 9laugh
+# 9laugh_api
+
+API provider for the 9laugh project
 
 # Build Info
 
@@ -39,11 +41,11 @@
 - Add new user (user creates account)
 - Remove existing user (user deletes their account)
 
-### Post (id, userId(uploader), category, title, description, mediaSource, upvotes, downvotes)
+### Post (id, userId(uploader), category, title, popularity, mediaSource, upvotes, downvotes)
 As user you can:
 - Add post (user uploads post)
 - Remove post (user removes post)
-- Get your posts
+- Get popular & new posts
 
 
 

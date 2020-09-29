@@ -46,7 +46,9 @@ As user you can:
 - Add post (user uploads post)
 - Remove post (user removes post)
 - Get popular & new posts
+- Like-dislike post (once)
 
+### userVote (id, userId, postId, vote)
 
 
 

@@ -11,7 +11,7 @@ import com.john_deligiannis.laugh_9.entities.User;
 public interface PostRepository extends CrudRepository<Post, Long> {
 	
 	@Query("SELECT e FROM post e WHERE e.user = :user AND e.postId = :postId")
-	Post findByUserIdAndPostId(User user, Long postId);
+	Post findByUserAndPostId(User user, Long postId);
 	
 	@Query("SELECT e FROM post e WHERE e.popularity='POPULAR'")
 	List<Post> findPopular();

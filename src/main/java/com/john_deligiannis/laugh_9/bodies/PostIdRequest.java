@@ -1,6 +1,6 @@
 package com.john_deligiannis.laugh_9.bodies;
 
-public class DeletePostRequest {
+public class PostIdRequest {
 	
 	private Long postId;
 

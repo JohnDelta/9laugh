@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.john_deligiannis.laugh_9.bodies.PostCategoryRequest;
 import com.john_deligiannis.laugh_9.bodies.PostIdRequest;
 import com.john_deligiannis.laugh_9.entities.Post;
 import com.john_deligiannis.laugh_9.entities.User;
@@ -116,6 +117,15 @@ public class PostController {
 		return posts;
 	}
 	
+	@PostMapping(path="/get/category")
+	public @ResponseBody List<Post> getCategoryPosts(
+			@RequestHeader("Authorization") String tokenHeader,
+			@RequestBody PostCategoryRequest postCategoryRequest
+	) {
+		List<Post> posts = postRepository.findByCategory(postCategoryRequest.getCategory());
+		return posts;
+	}
+	
 	@PostMapping("/upvote")
 	public @ResponseBody String upvotePost(
 			@RequestHeader("Authorization") String tokenHeader,
@@ -202,6 +212,20 @@ public class PostController {
 			}
 		}
 		return "Unable to find this post";
+	}
+	
+	@PostMapping("/get")
+	public @ResponseBody Post getPost(
+			@RequestHeader("Authorization") String tokenHeader,
+			@RequestBody PostIdRequest postIdRequest
+	) {
+		String jwtToken = tokenHeader.substring(7);
+		String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+		
+		User user = userRepository.findByUsername(username);
+		Post post = postRepository.findByUserAndPostId(user, postIdRequest.getPostId());
+		
+		return post;
 	}
 	
 	@ExceptionHandler(StorageFileNotFoundException.class)

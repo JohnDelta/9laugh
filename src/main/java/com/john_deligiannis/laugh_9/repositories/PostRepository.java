@@ -18,4 +18,7 @@ public interface PostRepository extends CrudRepository<Post, Long> {
 
 	@Query("SELECT e FROM post e WHERE e.popularity='NEW'")
 	List<Post> findNew();
+	
+	@Query("SELECT e FROM post e WHERE e.category LIKE %:category%")
+	List<Post> findByCategory(String category);
 }

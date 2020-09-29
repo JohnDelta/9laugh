@@ -46,9 +46,11 @@ As user you can:
 - Add post (user uploads post)
 - Remove post (user removes post)
 - Get popular & new posts
+- Get posts by given category
 - Like-dislike post (once)
+- Get specific post by id
 
-### userVote (id, userId, postId, vote)
+### userVote (id, userId, postId, vote) where vote contains (upvote, downvote, null)
 
 
 

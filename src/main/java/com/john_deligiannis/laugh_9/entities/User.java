@@ -1,13 +1,12 @@
 package com.john_deligiannis.laugh_9.entities;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity(name="user")
 public class User {
@@ -16,21 +15,15 @@ public class User {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long userId;
 	
-	@OneToMany(mappedBy="user")
-	private List<Post> posts;
-	
 	@Column(nullable=false)
 	private String username;
 	
+	@JsonIgnore
 	@Column(nullable=false)
 	private String password;
 	
 	public Long getUserId() {
 		return userId;
-	}
-	
-	public List<Post> getPosts() {
-		return posts;
 	}
 	
 	public String getUsername() {
@@ -43,10 +36,6 @@ public class User {
 	
 	public void setUserId(Long userId) {
 		this.userId = userId;
-	}
-	
-	public void setPosts(List<Post> posts) {
-		this.posts = posts;
 	}
 	
 	public void setUsername(String username) {

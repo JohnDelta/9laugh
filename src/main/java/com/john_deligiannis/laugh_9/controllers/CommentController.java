@@ -1,7 +1,9 @@
 package com.john_deligiannis.laugh_9.controllers;
 
 import java.util.Date;
+import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.john_deligiannis.laugh_9.bodies.CommentIdRequest;
 import com.john_deligiannis.laugh_9.bodies.CommentRequest;
+import com.john_deligiannis.laugh_9.bodies.PostIdRequest;
 import com.john_deligiannis.laugh_9.entities.Comment;
 import com.john_deligiannis.laugh_9.entities.Post;
 import com.john_deligiannis.laugh_9.entities.User;
@@ -37,7 +40,7 @@ public class CommentController {
 	private JwtTokenUtil jwtTokenUtil;
 	
 	@PostMapping(path="/add")
-	public @ResponseBody String addComment(
+	public @ResponseBody int addComment(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody CommentRequest commentRequest
 	) {
@@ -55,13 +58,13 @@ public class CommentController {
 			comment.setDate(new Date().getTime());
 			
 			commentRepository.save(comment);
-			return "Comment has been uploaded";
+			return Response.SC_OK;
 		}
-		return "Unable to upload comment";
+		return Response.SC_BAD_REQUEST;
 	}
 	
 	@PostMapping(path="/delete")
-	public @ResponseBody String addComment(
+	public @ResponseBody int addComment(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody CommentIdRequest commentIdRequest
 	) {
@@ -73,9 +76,20 @@ public class CommentController {
 		
 		if(user != null && comment != null) {
 			commentRepository.delete(comment);
-			return "Comment has been deleted";
+			return Response.SC_OK;
 		}
-		return "Unable to delete comment";
+		return Response.SC_BAD_REQUEST;
+	}
+	
+	@PostMapping(path="/get/all")
+	public @ResponseBody List<Comment> addComment(
+			@RequestHeader("Authorization") String tokenHeader,
+			@RequestBody PostIdRequest postIdRequest
+	) {
+		Post post = postRepository.findByPostId(postIdRequest.getPostId());
+		List<Comment> comments = commentRepository.findByPost(post);
+
+		return comments;
 	}
 
 }

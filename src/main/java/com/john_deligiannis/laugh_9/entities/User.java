@@ -18,30 +18,41 @@ public class User {
 	@Column(nullable=false)
 	private String username;
 	
+	@Column(nullable=false)
+	private String mediaSource;
+	
 	@JsonIgnore
 	@Column(nullable=false)
 	private String password;
-	
+
 	public Long getUserId() {
 		return userId;
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}
-	
+
+	public String getMediaSource() {
+		return mediaSource;
+	}
+
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-	
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+
+	public void setMediaSource(String mediaSource) {
+		this.mediaSource = mediaSource;
+	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}

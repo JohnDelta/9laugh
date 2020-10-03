@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity(name="comment")
 public class Comment {
 
@@ -19,6 +21,7 @@ public class Comment {
 	@JoinColumn(name="userId")
 	private User user;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="postId")
 	private Post post;

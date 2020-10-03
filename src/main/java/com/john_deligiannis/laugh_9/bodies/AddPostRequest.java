@@ -2,34 +2,34 @@ package com.john_deligiannis.laugh_9.bodies;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class AddUserRequest {
+public class AddPostRequest {
 
 	private MultipartFile multipartFile;
-	private String username;
-	private String password;
+	private String title;
+	private String category;
 	
 	public MultipartFile getMultipartFile() {
 		return multipartFile;
 	}
 	
-	public String getUsername() {
-		return username;
+	public String getTitle() {
+		return title;
 	}
 	
-	public String getPassword() {
-		return password;
+	public String getCategory() {
+		return category;
 	}
 	
 	public void setMultipartFile(MultipartFile multipartFile) {
 		this.multipartFile = multipartFile;
 	}
 	
-	public void setUsername(String username) {
-		this.username = username;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
-	public void setPassword(String password) {
-		this.password = password;
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	
 }

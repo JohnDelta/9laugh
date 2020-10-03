@@ -3,6 +3,7 @@ package com.john_deligiannis.laugh_9.controllers;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.john_deligiannis.laugh_9.bodies.AddPostRequest;
 import com.john_deligiannis.laugh_9.bodies.PostCategoryRequest;
 import com.john_deligiannis.laugh_9.bodies.PostIdRequest;
 import com.john_deligiannis.laugh_9.entities.Post;
@@ -52,11 +54,11 @@ public class PostController {
 	}
 	
 	@PostMapping(path="/add")
-	public @ResponseBody String addPost(
+	public @ResponseBody int addPost(
 			@RequestHeader("Authorization") String tokenHeader,
-			@RequestParam("file") MultipartFile file,
-			@RequestParam("title") String title,
-			@RequestParam("category") String category
+			@RequestParam MultipartFile file,
+			@RequestParam String title,
+			@RequestParam String category
 	) {
 		String jwtToken = tokenHeader.substring(7);
 		String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
@@ -65,7 +67,7 @@ public class PostController {
 		
 		if(user != null) {
 			int rnd = (int) (Math.random() * 100000 + 10000);
-			String mediaSource = username + "_" + rnd + ".png";
+			String mediaSource = username + "_post_" + rnd + ".png";
 			
 			Post post = new Post();
 			post.setUser(user);
@@ -79,13 +81,13 @@ public class PostController {
 			postRepository.save(post);
 			
 			storageService.store(file, mediaSource);
-			return "Post has been uploaded";
+			return Response.SC_OK;
 		}
-		return "Unable to upload post";
+		return Response.SC_BAD_REQUEST;
 	}
 	
 	@PostMapping(path="/delete")
-	public @ResponseBody String deletePost(
+	public @ResponseBody int deletePost(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody PostIdRequest postIdRequest
 	) {
@@ -98,10 +100,10 @@ public class PostController {
 		
 		if(post != null && user != null) {
 			postRepository.delete(post);
-			return "Post has been deleted";
+			return Response.SC_OK;
 		}
 		
-		return "Unable to delete this post";
+		return Response.SC_BAD_REQUEST;
 	}
 	
 	@PostMapping(path="/get/popular")
@@ -130,7 +132,7 @@ public class PostController {
 	}
 	
 	@PostMapping("/upvote")
-	public @ResponseBody String upvotePost(
+	public @ResponseBody int upvotePost(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody PostIdRequest postIdRequest
 	) {
@@ -154,7 +156,7 @@ public class PostController {
 				post.setUpvotes(post.getUpvotes() + 1);
 				postRepository.save(post);
 				
-				return "Post upvoted";
+				return Response.SC_OK;
 			} else {
 				if(userVote.getVote().equals(Vote.DOWNVOTE.toString())) {
 					
@@ -165,16 +167,16 @@ public class PostController {
 					post.setDownvotes(post.getDownvotes() - 1);
 					postRepository.save(post);
 					
-					return "Post upvoted";
+					return Response.SC_OK;
 				}
-				return "Post already upvoted";
+				return Response.SC_BAD_REQUEST;
 			}
 		}
-		return "Unable to find this post";
+		return Response.SC_BAD_REQUEST;
 	}
 	
 	@PostMapping("/downvote")
-	public @ResponseBody String downvotePost(
+	public @ResponseBody int downvotePost(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody PostIdRequest postIdRequest
 	) {
@@ -198,7 +200,7 @@ public class PostController {
 				post.setUpvotes(post.getUpvotes() + 1);
 				postRepository.save(post);
 				
-				return "Post downvoted";
+				return Response.SC_OK;
 			} else {
 				if(userVote.getVote().equals(Vote.UPVOTE.toString())) {
 					
@@ -209,12 +211,12 @@ public class PostController {
 					post.setDownvotes(post.getDownvotes() + 1);
 					postRepository.save(post);
 					
-					return "Post downvoted";
+					return Response.SC_OK;
 				}
-				return "Post already downvoted";
+				return Response.SC_BAD_REQUEST;
 			}
 		}
-		return "Unable to find this post";
+		return Response.SC_BAD_REQUEST;
 	}
 	
 	@PostMapping("/get")

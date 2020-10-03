@@ -50,9 +50,13 @@ public class UserController {
 		String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
 		
 		User user = userRepository.findByUsername(username);
-		userRepository.delete(user);
 		
-		return "User " + username + " has been deleted";
+		if(user != null) {
+			userRepository.delete(user);
+			return "User " + username + " has been deleted";
+		}
+		
+		return "Unable to delete user";
 	}
 	
 }

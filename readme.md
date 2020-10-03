@@ -35,22 +35,22 @@ API provider for the 9laugh project
 	
 # Concept info
 
-## Entities
-
-### User (id, username, password)
-- Add new user (user creates account)
-- Remove existing user (user deletes their account)
-
-### Post (id, userId(uploader), category, title, popularity, mediaSource, upvotes, downvotes)
+## Operations
 As user you can:
-- Add post (user uploads post)
-- Remove post (user removes post)
-- Get popular & new posts
-- Get posts by given category
-- Like-dislike post (once)
+- Create / Delete / Login account
+- Add post
+- Get posts by popularity (popular, new)
+- Get posts by given category (funny, news, wtf, random)
+- Like-dislike post
 - Get specific post by id
+- Comment on a specific post
+- Get and see all comments of a specific post
 
-### userVote (id, userId, postId, vote) where vote contains (upvote, downvote, null)
+## Entities
+- user (id, username, password)
+- post (id, userId(uploader), category, title, popularity, mediaSource, upvotes, downvotes)
+- userVote (id, userId, postId, vote) where vote contains (upvote, downvote, null)
+- comments (id, userId, postId, comment, date)
 
 
 

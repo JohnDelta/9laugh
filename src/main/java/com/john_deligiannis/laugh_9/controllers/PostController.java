@@ -63,22 +63,25 @@ public class PostController {
 		
 		User user = userRepository.findByUsername(username);
 		
-		int rnd = (int) (Math.random() * 100000 + 10000);
-		String mediaSource = username + "_" + rnd + ".png";
-		
-		Post post = new Post();
-		post.setUser(user);
-		post.setTitle(title);
-		post.setCategory(category);
-		post.setMediaSource(mediaSource);
-		post.setDownvotes(0L);
-		post.setUpvotes(0L);
-		post.setPopularity(Popularity.NEW.toString());
-		post.setDate(new Date().getTime());
-		postRepository.save(post);
-		
-		storageService.store(file, mediaSource);
-		return "Post has been uploaded";
+		if(user != null) {
+			int rnd = (int) (Math.random() * 100000 + 10000);
+			String mediaSource = username + "_" + rnd + ".png";
+			
+			Post post = new Post();
+			post.setUser(user);
+			post.setTitle(title);
+			post.setCategory(category);
+			post.setMediaSource(mediaSource);
+			post.setDownvotes(0L);
+			post.setUpvotes(0L);
+			post.setPopularity(Popularity.NEW.toString());
+			post.setDate(new Date().getTime());
+			postRepository.save(post);
+			
+			storageService.store(file, mediaSource);
+			return "Post has been uploaded";
+		}
+		return "Unable to upload post";
 	}
 	
 	@PostMapping(path="/delete")
@@ -93,7 +96,7 @@ public class PostController {
 		
 		Post post = postRepository.findByUserAndPostId(user, postIdRequest.getPostId());
 		
-		if(post != null) {
+		if(post != null && user != null) {
 			postRepository.delete(post);
 			return "Post has been deleted";
 		}
@@ -137,7 +140,7 @@ public class PostController {
 		User user = userRepository.findByUsername(username);
 		Post post = postRepository.findByUserAndPostId(user, postIdRequest.getPostId());
 		
-		if(post != null) {
+		if(post != null && user != null) {
 			UserVote userVote = userVoteRepository.findByUserAndPost(user, post);
 			
 			if(userVote == null) {
@@ -181,7 +184,7 @@ public class PostController {
 		User user = userRepository.findByUsername(username);
 		Post post = postRepository.findByUserAndPostId(user, postIdRequest.getPostId());
 		
-		if(post != null) {
+		if(post != null && user != null) {
 			UserVote userVote = userVoteRepository.findByUserAndPost(user, post);
 			
 			if(userVote == null) {

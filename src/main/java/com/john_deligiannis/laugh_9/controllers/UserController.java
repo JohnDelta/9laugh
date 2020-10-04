@@ -48,8 +48,11 @@ public class UserController {
 			String hash = encoder.encode(password);
 			user.setPassword(hash);
 			
+			String[] args = file.getOriginalFilename().split("\\.");
+			String extension = args[1];
+			
 			int rnd = (int) (Math.random() * 100000 + 10000);
-			String mediaSource = username + "_user_" + rnd + ".png";
+			String mediaSource = username + "_user_" + rnd + "." + extension;
 			user.setMediaSource(mediaSource);
 			
 			storageService.store(file, mediaSource);

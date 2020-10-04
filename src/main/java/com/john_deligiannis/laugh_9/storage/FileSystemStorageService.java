@@ -29,6 +29,7 @@ public class FileSystemStorageService implements StorageService {
 
 	@Override
 	public void store(MultipartFile file, String newFileName) {
+		
 		String filename = StringUtils.cleanPath(newFileName);
 		try {
 			if (file.isEmpty()) {

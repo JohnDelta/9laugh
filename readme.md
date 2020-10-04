@@ -1,6 +1,6 @@
 # 9laugh_api
 
-API provider for the 9laugh project
+Restfull API provider for the 9laugh project
 
 # Build Info
 
@@ -33,15 +33,95 @@ API provider for the 9laugh project
 
 ` grant all on 9laugh.* to '9laughUser'@'%'; `
 	
+# API Requests (local testing server: localhost:8082)
+
+## add user (create account)
+url: localhost:8082/api/user/add
+method: POST
+content-type: multipart/form-data
+body: (in form data) {file: imgFile, username: "", password: ""}
+returns: application/json
+
+## delete user (remove account)
+url: localhost:8082/api/user/delete
+method: POST
+content-type: application/json
+body: {}
+header: {Authorization: (jwtToken)}
+returns: application/json
+
+## authenticate user (account login)
+url: localhost:8082/api/authenticate
+method: POST
+content-type: application/json
+body: {username: "", password: ""}
+returns: application/json
+
+## Add post
+url: localhost:8082/api/post/add
+method: POST
+content-type: mutlipart/form-data
+body: (in form data) {file: imgFile, title: "", category: ""}
+header: {Authorization: (jwtToken)}
+returns: application/json
+
+## delete post
+url: localhost:8082/api/post/delete
+method: POST
+content-type: application/json
+body: {"postId": (id)}
+header: {Authorization: (jwtToken)}
+returns: application/json
+
+## get popular posts
+url: localhost:8082/api/post/get/popular
+method: POST
+content-type: application/json
+body: {}
+header: {Authorization: (jwtToken)}
+returns: application/json
+
+## get new posts
+url: localhost:8082/api/post/get/new
+method: POST
+content-type: application/json
+body: {}
+header: {Authorization: (jwtToken)}
+returns: application/json
+
+## get posts by category
+url: localhost:8082/api/post/get/category
+method: POST
+content-type: application/json
+body: {"category": "funny"}
+header: {Authorization: (jwtToken)}
+returns: application/json
+
+## user upvotes post
+url: localhost:8082/api/post/upvote
+method: POST
+content-type: application/json
+body: {"postId": (id)}
+header: {Authorization: (jwtToken)}
+returns: application/json
+
+## get post by id
+url: localhost:8082/api/post/get
+method: POST
+content-type: application/json
+body: {"postId": (id)}
+header: {Authorization: (jwtToken)}
+returns: application/json
+
 # Concept info
 
 ## Operations
 As user you can:
 - Create / Delete / Login account
-- Add post
+- Add / delete post
 - Get posts by popularity (popular, new)
 - Get posts by given category (funny, news, wtf, random)
-- Like-dislike post
+- Like / dislike post
 - Get specific post by id
 - Comment on a specific post
 - Get and see all comments of a specific post

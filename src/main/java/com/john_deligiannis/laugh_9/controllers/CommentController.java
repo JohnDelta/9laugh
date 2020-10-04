@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +41,7 @@ public class CommentController {
 	private JwtTokenUtil jwtTokenUtil;
 	
 	@PostMapping(path="/add")
-	public @ResponseBody int addComment(
+	public @ResponseBody ResponseEntity<String> addComment(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody CommentRequest commentRequest
 	) {
@@ -58,13 +59,13 @@ public class CommentController {
 			comment.setDate(new Date().getTime());
 			
 			commentRepository.save(comment);
-			return Response.SC_OK;
+			return ResponseEntity.ok("Comment uploaded");
 		}
-		return Response.SC_BAD_REQUEST;
+		return ResponseEntity.badRequest().body("Unable to upload comment");
 	}
 	
 	@PostMapping(path="/delete")
-	public @ResponseBody int addComment(
+	public @ResponseBody ResponseEntity<String> addComment(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody CommentIdRequest commentIdRequest
 	) {
@@ -76,20 +77,23 @@ public class CommentController {
 		
 		if(user != null && comment != null) {
 			commentRepository.delete(comment);
-			return Response.SC_OK;
+			return ResponseEntity.ok("Comment deleted");
 		}
-		return Response.SC_BAD_REQUEST;
+		return ResponseEntity.badRequest().body("Unable to delete comment");
 	}
 	
 	@PostMapping(path="/get/all")
-	public @ResponseBody List<Comment> addComment(
+	public @ResponseBody ResponseEntity<List<Comment>> addComment(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody PostIdRequest postIdRequest
 	) {
 		Post post = postRepository.findByPostId(postIdRequest.getPostId());
 		List<Comment> comments = commentRepository.findByPost(post);
 
-		return comments;
+		if(comments != null) {
+			return ResponseEntity.ok(comments);
+		}
+		return ResponseEntity.badRequest().body(null);
 	}
 
 }

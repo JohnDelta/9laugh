@@ -3,7 +3,6 @@ package com.john_deligiannis.laugh_9.controllers;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.john_deligiannis.laugh_9.bodies.AddPostRequest;
 import com.john_deligiannis.laugh_9.bodies.PostCategoryRequest;
 import com.john_deligiannis.laugh_9.bodies.PostIdRequest;
 import com.john_deligiannis.laugh_9.entities.Post;
@@ -54,7 +52,7 @@ public class PostController {
 	}
 	
 	@PostMapping(path="/add")
-	public @ResponseBody int addPost(
+	public @ResponseBody ResponseEntity<String> addPost(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestParam MultipartFile file,
 			@RequestParam String title,
@@ -81,13 +79,13 @@ public class PostController {
 			postRepository.save(post);
 			
 			storageService.store(file, mediaSource);
-			return Response.SC_OK;
+			return ResponseEntity.ok("Post uploaded");
 		}
-		return Response.SC_BAD_REQUEST;
+		return ResponseEntity.badRequest().body("Unable to upload post");
 	}
 	
 	@PostMapping(path="/delete")
-	public @ResponseBody int deletePost(
+	public @ResponseBody ResponseEntity<String> deletePost(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody PostIdRequest postIdRequest
 	) {
@@ -100,39 +98,48 @@ public class PostController {
 		
 		if(post != null && user != null) {
 			postRepository.delete(post);
-			return Response.SC_OK;
+			return ResponseEntity.ok("Post deleted");
 		}
 		
-		return Response.SC_BAD_REQUEST;
+		return ResponseEntity.badRequest().body("Unable to delete post");
 	}
 	
 	@PostMapping(path="/get/popular")
-	public @ResponseBody List<Post> getPopularPosts(
+	public @ResponseBody ResponseEntity<List<Post>> getPopularPosts(
 			@RequestHeader("Authorization") String tokenHeader
 	) {
 		List<Post> posts = postRepository.findPopular();
-		return posts;
+		if(posts != null) {
+			return ResponseEntity.ok(posts);
+		}
+		return ResponseEntity.badRequest().body(null);
 	}
 	
 	@PostMapping(path="/get/new")
-	public @ResponseBody List<Post> getNewPosts(
+	public @ResponseBody ResponseEntity<List<Post>> getNewPosts(
 			@RequestHeader("Authorization") String tokenHeader
 	) {
 		List<Post> posts = postRepository.findNew();
-		return posts;
+		if(posts != null) {
+			return ResponseEntity.ok(posts);
+		}
+		return ResponseEntity.badRequest().body(null);
 	}
 	
 	@PostMapping(path="/get/category")
-	public @ResponseBody List<Post> getCategoryPosts(
+	public @ResponseBody ResponseEntity<List<Post>> getCategoryPosts(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody PostCategoryRequest postCategoryRequest
 	) {
 		List<Post> posts = postRepository.findByCategory(postCategoryRequest.getCategory());
-		return posts;
+		if(posts != null) {
+			return ResponseEntity.ok(posts);
+		}
+		return ResponseEntity.badRequest().body(null);
 	}
 	
 	@PostMapping("/upvote")
-	public @ResponseBody int upvotePost(
+	public @ResponseBody ResponseEntity<String> upvotePost(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody PostIdRequest postIdRequest
 	) {
@@ -156,7 +163,7 @@ public class PostController {
 				post.setUpvotes(post.getUpvotes() + 1);
 				postRepository.save(post);
 				
-				return Response.SC_OK;
+				return ResponseEntity.ok("Post upvoted");
 			} else {
 				if(userVote.getVote().equals(Vote.DOWNVOTE.toString())) {
 					
@@ -167,16 +174,16 @@ public class PostController {
 					post.setDownvotes(post.getDownvotes() - 1);
 					postRepository.save(post);
 					
-					return Response.SC_OK;
+					return ResponseEntity.ok("Post upvoted");
 				}
-				return Response.SC_BAD_REQUEST;
+				return ResponseEntity.badRequest().body("Unable to upvote post");
 			}
 		}
-		return Response.SC_BAD_REQUEST;
+		return ResponseEntity.badRequest().body("Unable to upvote post");
 	}
 	
 	@PostMapping("/downvote")
-	public @ResponseBody int downvotePost(
+	public @ResponseBody ResponseEntity<String> downvotePost(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody PostIdRequest postIdRequest
 	) {
@@ -200,7 +207,7 @@ public class PostController {
 				post.setUpvotes(post.getUpvotes() + 1);
 				postRepository.save(post);
 				
-				return Response.SC_OK;
+				return ResponseEntity.ok("Post downvoted");
 			} else {
 				if(userVote.getVote().equals(Vote.UPVOTE.toString())) {
 					
@@ -211,16 +218,16 @@ public class PostController {
 					post.setDownvotes(post.getDownvotes() + 1);
 					postRepository.save(post);
 					
-					return Response.SC_OK;
+					return ResponseEntity.ok("Post downvoted");
 				}
-				return Response.SC_BAD_REQUEST;
+				return ResponseEntity.badRequest().body("Unable to downvote post");
 			}
 		}
-		return Response.SC_BAD_REQUEST;
+		return ResponseEntity.badRequest().body("Unable to downvote post");
 	}
 	
 	@PostMapping("/get")
-	public @ResponseBody Post getPost(
+	public @ResponseBody ResponseEntity<Post> getPost(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody PostIdRequest postIdRequest
 	) {
@@ -230,7 +237,10 @@ public class PostController {
 		User user = userRepository.findByUsername(username);
 		Post post = postRepository.findByUserAndPostId(user, postIdRequest.getPostId());
 		
-		return post;
+		if(post != null) {
+			return ResponseEntity.ok(post);
+		}
+		return ResponseEntity.badRequest().body(null);
 	}
 	
 	@ExceptionHandler(StorageFileNotFoundException.class)

@@ -1,12 +1,10 @@
 package com.john_deligiannis.laugh_9.controllers;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.john_deligiannis.laugh_9.repositories.UserRepository;
 import com.john_deligiannis.laugh_9.security_config.JwtTokenUtil;
 import com.john_deligiannis.laugh_9.storage.StorageService;
-import com.john_deligiannis.laugh_9.bodies.AddUserRequest;
 import com.john_deligiannis.laugh_9.entities.User;
 
 @Controller
@@ -37,7 +34,7 @@ public class UserController {
 	}
 	
 	@PostMapping(path="/add")
-	public @ResponseBody int addUser (
+	public @ResponseBody ResponseEntity<String> addUser (
 			@RequestParam MultipartFile file,
 			@RequestParam String username,
 			@RequestParam String password
@@ -59,14 +56,14 @@ public class UserController {
 			
 			userRepository.save(user);
 			
-			return Response.SC_OK;
+			return ResponseEntity.ok("Account created");
 		}
 		
-		return Response.SC_BAD_REQUEST;
+		return ResponseEntity.badRequest().body("Unable to create account");
 	}
 	
 	@PostMapping(path="/delete")
-	public @ResponseBody int deleteUser (
+	public @ResponseBody ResponseEntity<String> deleteUser (
 			@RequestHeader("Authorization") String tokenHeader
 	) {
 		String jwtToken = tokenHeader.substring(7);
@@ -76,10 +73,10 @@ public class UserController {
 		
 		if(user != null) {
 			userRepository.delete(user);
-			return Response.SC_OK;
+			return ResponseEntity.ok("Account deleted");
 		}
 		
-		return Response.SC_BAD_REQUEST;
+		return ResponseEntity.badRequest().body("Unable to delete account");
 	}
 	
 }

@@ -54,7 +54,7 @@ public class PostController {
 	@PostMapping(path="/add")
 	public @ResponseBody ResponseEntity<String> addPost(
 			@RequestHeader("Authorization") String tokenHeader,
-			@RequestParam MultipartFile file,
+			@RequestParam(required=false) MultipartFile file,
 			@RequestParam String title,
 			@RequestParam String category
 	) {
@@ -63,20 +63,22 @@ public class PostController {
 		
 		User user = userRepository.findByUsername(username);
 		
-		if((user != null) && !title.isEmpty() && !category.isEmpty() && !file.isEmpty() && (file != null)) {
+		if((user != null) && !title.isEmpty() && !category.isEmpty()) {
 
 			String[] args = file.getOriginalFilename().split("\\.");
 			String extension = args[1];
 			
-			int rnd = (int) (Math.random() * 100000 + 10000);
-			String mediaSource = username + "_post_" + rnd + "." + extension;
-			storageService.store(file, mediaSource);
+			String mediaSource = "post_default.jpg";
+			if(file != null && !file.isEmpty()) {
+				int rnd = (int) (Math.random() * 100000 + 10000);
+				mediaSource = username + "_post_" + rnd + "." + extension;
+				storageService.store(file, mediaSource);	
+			}
 			
 			Post post = new Post();
 			post.setUser(user);
 			post.setTitle(title);
 			post.setCategory(category);
-			post.setMediaSource(mediaSource);
 			post.setDownvotes(0L);
 			post.setUpvotes(0L);
 			post.setPopularity(Popularity.NEW.toString());

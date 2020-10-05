@@ -76,6 +76,7 @@ Restfull API provider for the 9laugh project
 - body: (in form data) {file: imgFile, title: "", category: ""}
 - header: {Authorization: (jwtToken)}
 - returns: application/json
+- comments: image file is optional. If no image file is attached the default image will be used
 
 ## delete post
 url: localhost:8082/api/post/delete

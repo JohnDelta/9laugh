@@ -35,27 +35,32 @@ public class UserController {
 	
 	@PostMapping(path="/add")
 	public @ResponseBody ResponseEntity<String> addUser (
-			@RequestParam MultipartFile file,
+			@RequestParam(required=false) MultipartFile file,
 			@RequestParam String username,
 			@RequestParam String password
 	) {
 		
-		if(userRepository.findByUsername(username) == null) {
+		if((!username.isEmpty() && (!password.isEmpty())) 
+				&& (userRepository.findByUsername(username) == null)) {
+			
 			User user = new User();
 			
 			user.setUsername(username);
+			
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 			String hash = encoder.encode(password);
 			user.setPassword(hash);
 			
-			String[] args = file.getOriginalFilename().split("\\.");
-			String extension = args[1];
-			
-			int rnd = (int) (Math.random() * 100000 + 10000);
-			String mediaSource = username + "_user_" + rnd + "." + extension;
-			user.setMediaSource(mediaSource);
-			
-			storageService.store(file, mediaSource);
+			user.setMediaSource("default.png");
+			if(file != null && !file.isEmpty()) {
+				String[] args = file.getOriginalFilename().split("\\.");
+				String extension = args[1];
+				
+				int rnd = (int) (Math.random() * 100000 + 10000);
+				String mediaSource = username + "_user_" + rnd + "." + extension;
+				user.setMediaSource(mediaSource);
+				storageService.store(file, mediaSource);
+			}
 			
 			userRepository.save(user);
 			

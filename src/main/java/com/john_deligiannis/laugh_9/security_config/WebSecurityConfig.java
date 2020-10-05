@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -69,7 +70,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring()
 			.antMatchers("/api/authenticate")
-			.antMatchers("/api/user/add");
+			.antMatchers("/api/user/add")
+			.antMatchers("/default-images/**")
+			.antMatchers("/upload-dir/**");
+	}
+	
+	@Configuration
+	public class AdditionalResourceWebConfiguration implements WebMvcConfigurer {
+	    @Override
+	    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+	        registry.addResourceHandler("/upload-dir/**").addResourceLocations("file:upload-dir/");
+	        registry.addResourceHandler("/default-images/**").addResourceLocations("file:default-images/");
+	    }
 	}
 
 }

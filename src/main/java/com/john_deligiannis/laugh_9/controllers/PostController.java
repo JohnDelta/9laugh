@@ -64,18 +64,19 @@ public class PostController {
 		User user = userRepository.findByUsername(username);
 		
 		if((user != null) && !title.isEmpty() && !category.isEmpty()) {
-
-			String[] args = file.getOriginalFilename().split("\\.");
-			String extension = args[1];
 			
 			String mediaSource = "post_default.jpg";
 			if(file != null && !file.isEmpty()) {
+				String[] args = file.getOriginalFilename().split("\\.");
+				String extension = args[1];
+				
 				int rnd = (int) (Math.random() * 100000 + 10000);
 				mediaSource = username + "_post_" + rnd + "." + extension;
 				storageService.store(file, mediaSource);	
 			}
 			
 			Post post = new Post();
+			post.setMediaSource(mediaSource);
 			post.setUser(user);
 			post.setTitle(title);
 			post.setCategory(category);

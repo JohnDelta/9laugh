@@ -63,9 +63,14 @@ public class PostController {
 		
 		User user = userRepository.findByUsername(username);
 		
-		if(user != null) {
+		if((user != null) && !title.isEmpty() && !category.isEmpty() && !file.isEmpty() && (file != null)) {
+
+			String[] args = file.getOriginalFilename().split("\\.");
+			String extension = args[1];
+			
 			int rnd = (int) (Math.random() * 100000 + 10000);
-			String mediaSource = username + "_post_" + rnd + ".png";
+			String mediaSource = username + "_post_" + rnd + "." + extension;
+			storageService.store(file, mediaSource);
 			
 			Post post = new Post();
 			post.setUser(user);
@@ -78,7 +83,6 @@ public class PostController {
 			post.setDate(new Date().getTime());
 			postRepository.save(post);
 			
-			storageService.store(file, mediaSource);
 			return ResponseEntity.ok("Post uploaded");
 		}
 		return ResponseEntity.badRequest().body("Unable to upload post");

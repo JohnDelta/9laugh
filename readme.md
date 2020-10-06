@@ -91,7 +91,6 @@ url: localhost:8082/api/post/delete
 - method: POST
 - content-type: application/json
 - body: {category: "funny" | "news" | "random" | "wtf"}
-- header: {Authorization: (jwtToken)}
 - returns: application/json
 
 ## get new posts
@@ -99,7 +98,6 @@ url: localhost:8082/api/post/delete
 - method: POST
 - content-type: application/json
 - body: {category: "funny" | "news" | "random" | "wtf"}
-- header: {Authorization: (jwtToken)}
 - returns: application/json
 
 ## get post by id
@@ -107,22 +105,19 @@ url: localhost:8082/api/post/delete
 - method: POST
 - content-type: application/json
 - body: {"postId": (id)}
-- header: {Authorization: (jwtToken)}
 - returns: application/json
 
 ## get posts by user id
-- url: localhost:8082/api/post/upvote
+- url: localhost:8082/api/post/get/user
 - method: POST
 - content-type: application/json
-- body: {"userId": (id)}
-- header: {Authorization: (jwtToken)}
+- body: {"username": (username)}
 - returns: application/json
 
 ## get posts' categories
 - url: localhost:8082/api/post/get/categories
 - method: POST
 - content-type: application/json
-- header: {Authorization: (jwtToken)}
 - returns: application/json
 
 ## user upvotes post
@@ -142,17 +137,6 @@ url: localhost:8082/api/post/delete
 - returns: application/json
 
 # Concept info
-
-## Operations
-As user you can:
-- Create / Delete / Login account
-- Add / delete post
-- Get posts by popularity (popular, new)
-- Get posts by given category (funny, news, wtf, random)
-- Like / dislike post
-- Get specific post by id
-- Comment on a specific post
-- Get and see all comments of a specific post
 
 ## Entities
 - user (id, username, password)

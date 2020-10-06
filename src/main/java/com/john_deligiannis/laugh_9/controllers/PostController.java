@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -116,19 +115,27 @@ public class PostController {
 	
 	@PostMapping(path="/get/popular")
 	public @ResponseBody ResponseEntity<List<Post>> getPopularPosts(
-			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody PostCategoryRequest postCategoryRequest
 	) {
-		List<Post> posts = postRepository.findByPopularityAndCategory(Popularity.POPULAR.toString(), postCategoryRequest.getCategory());
-		if(posts != null) {
-			return ResponseEntity.ok(posts);
+		boolean categoryFound = false;
+		for(Category c: Category.values()) {
+			if(c.toString().equals(postCategoryRequest.getCategory())) {
+				categoryFound = true;
+			}
 		}
+		
+		if(categoryFound) {
+			List<Post> posts = postRepository.findByPopularityAndCategory(Popularity.POPULAR.toString(), postCategoryRequest.getCategory());
+			if(posts != null) {
+				return ResponseEntity.ok(posts);
+			}
+		}
+		
 		return ResponseEntity.badRequest().body(null);
 	}
 	
 	@PostMapping(path="/get/new")
 	public @ResponseBody ResponseEntity<List<Post>> getNewPosts(
-			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody PostCategoryRequest postCategoryRequest
 	) {
 		boolean categoryFound = false;
@@ -148,6 +155,19 @@ public class PostController {
 		return ResponseEntity.badRequest().body(null);
 	}
 	
+	@PostMapping("/get")
+	public @ResponseBody ResponseEntity<Post> getPost(
+			@RequestBody PostIdRequest postIdRequest
+	) {
+
+		Post post = postRepository.findByPostId(postIdRequest.getPostId());
+		
+		if(post != null) {
+			return ResponseEntity.ok(post);
+		}
+		return ResponseEntity.badRequest().body(null);
+	}
+	
 	@PostMapping("/get/user")
 	public @ResponseBody ResponseEntity<List<Post>> getPost(
 			@RequestBody UsernameRequest usernameRequest
@@ -162,36 +182,10 @@ public class PostController {
 		return ResponseEntity.badRequest().body(null);
 	}
 	
-	@PostMapping("/get")
-	public @ResponseBody ResponseEntity<Post> getPost(
-			@RequestHeader("Authorization") String tokenHeader,
-			@RequestBody PostIdRequest postIdRequest
-	) {
-		String jwtToken = tokenHeader.substring(7);
-		String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-		
-		User user = userRepository.findByUsername(username);
-		Post post = postRepository.findByUserAndPostId(user, postIdRequest.getPostId());
-		
-		if(post != null) {
-			return ResponseEntity.ok(post);
-		}
-		return ResponseEntity.badRequest().body(null);
-	}
-	
 	@PostMapping("/get/categories")
-	public @ResponseBody ResponseEntity<Category[]> getPost(
-			@RequestHeader("Authorization") String tokenHeader
-	) {
-		String jwtToken = tokenHeader.substring(7);
-		String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-		
-		User user = userRepository.findByUsername(username);
-
-		if(user != null) {
-			return ResponseEntity.ok(Category.values());
-		}
-		return ResponseEntity.badRequest().body(null);
+	public @ResponseBody ResponseEntity<Category[]> getPost() {
+	
+		return ResponseEntity.ok(Category.values());
 	}
 	
 	@PostMapping("/upvote")

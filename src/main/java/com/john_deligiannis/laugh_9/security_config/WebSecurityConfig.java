@@ -71,6 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/authenticate")
 			.antMatchers("/api/user/add")
 			.antMatchers("/api/post/get/**")
+			.antMatchers("/api/comment/get/**")
 			.antMatchers("/default-images/**")
 			.antMatchers("/upload-dir/**");
 	}

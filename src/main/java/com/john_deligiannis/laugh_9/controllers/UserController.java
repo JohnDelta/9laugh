@@ -87,4 +87,20 @@ public class UserController {
 		return ResponseEntity.badRequest().body("Unable to delete account");
 	}
 	
+	@PostMapping(path="/get")
+	public @ResponseBody ResponseEntity<User> getUser (
+			@RequestHeader("Authorization") String tokenHeader
+	) {
+		String jwtToken = tokenHeader.substring(7);
+		String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+		
+		User user = userRepository.findByUsername(username);
+		
+		if(user != null) {
+			return ResponseEntity.ok(user);
+		}
+		
+		return ResponseEntity.badRequest().body(null);
+	}
+	
 }

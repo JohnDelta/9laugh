@@ -65,7 +65,7 @@ public class CommentController {
 	}
 	
 	@PostMapping(path="/delete")
-	public @ResponseBody ResponseEntity<String> addComment(
+	public @ResponseBody ResponseEntity<String> deleteComment(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody CommentIdRequest commentIdRequest
 	) {
@@ -73,9 +73,9 @@ public class CommentController {
 		String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
 		
 		User user = userRepository.findByUsername(username);
-		Comment comment = commentRepository.findByCommentId(commentIdRequest.getCommentId());
+		Comment comment = commentRepository.findByCommentIdAndUser(commentIdRequest.getCommentId(), user);
 		
-		if(user != null && comment != null) {
+		if(comment != null) {
 			commentRepository.delete(comment);
 			return ResponseEntity.ok("Comment deleted");
 		}
@@ -83,7 +83,7 @@ public class CommentController {
 	}
 	
 	@PostMapping(path="/get/all")
-	public @ResponseBody ResponseEntity<List<Comment>> addComment(
+	public @ResponseBody ResponseEntity<List<Comment>> getAllComment(
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody PostIdRequest postIdRequest
 	) {

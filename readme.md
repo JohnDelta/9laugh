@@ -62,6 +62,14 @@ Restfull API provider for the 9laugh project
 - header: {Authorization: (jwtToken)}
 - returns: application/json
 
+## get user data (token's owner data)
+- url: localhost:8082/api/user/get
+- method: POST
+- content-type: application/json
+- body: {}
+- header: {Authorization: (jwtToken)}
+- returns: application/json
+
 ## authenticate user (account login)
 - url: localhost:8082/api/authenticate
 - method: POST

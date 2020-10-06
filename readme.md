@@ -118,6 +118,13 @@ url: localhost:8082/api/post/delete
 - header: {Authorization: (jwtToken)}
 - returns: application/json
 
+## get posts' categories
+- url: localhost:8082/api/post/get/categories
+- method: POST
+- content-type: application/json
+- header: {Authorization: (jwtToken)}
+- returns: application/json
+
 ## user upvotes post
 - url: localhost:8082/api/post/upvote
 - method: POST

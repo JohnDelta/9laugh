@@ -131,10 +131,20 @@ public class PostController {
 			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody PostCategoryRequest postCategoryRequest
 	) {
-		List<Post> posts = postRepository.findByPopularityAndCategory(Popularity.NEW.toString(), postCategoryRequest.getCategory());
-		if(posts != null) {
-			return ResponseEntity.ok(posts);
+		boolean categoryFound = false;
+		for(Category c: Category.values()) {
+			if(c.toString().equals(postCategoryRequest.getCategory())) {
+				categoryFound = true;
+			}
 		}
+		
+		if(categoryFound) {
+			List<Post> posts = postRepository.findByPopularityAndCategory(Popularity.NEW.toString(), postCategoryRequest.getCategory());
+			if(posts != null) {
+				return ResponseEntity.ok(posts);
+			}
+		}
+		
 		return ResponseEntity.badRequest().body(null);
 	}
 	
@@ -165,6 +175,21 @@ public class PostController {
 		
 		if(post != null) {
 			return ResponseEntity.ok(post);
+		}
+		return ResponseEntity.badRequest().body(null);
+	}
+	
+	@PostMapping("/get/categories")
+	public @ResponseBody ResponseEntity<Category[]> getPost(
+			@RequestHeader("Authorization") String tokenHeader
+	) {
+		String jwtToken = tokenHeader.substring(7);
+		String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+		
+		User user = userRepository.findByUsername(username);
+
+		if(user != null) {
+			return ResponseEntity.ok(Category.values());
 		}
 		return ResponseEntity.badRequest().body(null);
 	}

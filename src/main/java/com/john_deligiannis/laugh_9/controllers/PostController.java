@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.john_deligiannis.laugh_9.bodies.PostCategoryRequest;
 import com.john_deligiannis.laugh_9.bodies.PostIdRequest;
+import com.john_deligiannis.laugh_9.bodies.UsernameRequest;
 import com.john_deligiannis.laugh_9.entities.Post;
 import com.john_deligiannis.laugh_9.entities.User;
 import com.john_deligiannis.laugh_9.entities.UserVote;
@@ -115,9 +116,10 @@ public class PostController {
 	
 	@PostMapping(path="/get/popular")
 	public @ResponseBody ResponseEntity<List<Post>> getPopularPosts(
-			@RequestHeader("Authorization") String tokenHeader
+			@RequestHeader("Authorization") String tokenHeader,
+			@RequestBody PostCategoryRequest postCategoryRequest
 	) {
-		List<Post> posts = postRepository.findPopular();
+		List<Post> posts = postRepository.findByPopularityAndCategory(Popularity.POPULAR.toString(), postCategoryRequest.getCategory());
 		if(posts != null) {
 			return ResponseEntity.ok(posts);
 		}
@@ -126,23 +128,43 @@ public class PostController {
 	
 	@PostMapping(path="/get/new")
 	public @ResponseBody ResponseEntity<List<Post>> getNewPosts(
-			@RequestHeader("Authorization") String tokenHeader
+			@RequestHeader("Authorization") String tokenHeader,
+			@RequestBody PostCategoryRequest postCategoryRequest
 	) {
-		List<Post> posts = postRepository.findNew();
+		List<Post> posts = postRepository.findByPopularityAndCategory(Popularity.NEW.toString(), postCategoryRequest.getCategory());
 		if(posts != null) {
 			return ResponseEntity.ok(posts);
 		}
 		return ResponseEntity.badRequest().body(null);
 	}
 	
-	@PostMapping(path="/get/category")
-	public @ResponseBody ResponseEntity<List<Post>> getCategoryPosts(
-			@RequestHeader("Authorization") String tokenHeader,
-			@RequestBody PostCategoryRequest postCategoryRequest
+	@PostMapping("/user/get")
+	public @ResponseBody ResponseEntity<List<Post>> getPost(
+			@RequestBody UsernameRequest usernameRequest
 	) {
-		List<Post> posts = postRepository.findByCategory(postCategoryRequest.getCategory());
+
+		User user = userRepository.findByUsername(usernameRequest.getUsername());
+		List<Post> posts = postRepository.findByUser(user);
+		
 		if(posts != null) {
 			return ResponseEntity.ok(posts);
+		}
+		return ResponseEntity.badRequest().body(null);
+	}
+	
+	@PostMapping("/get")
+	public @ResponseBody ResponseEntity<Post> getPost(
+			@RequestHeader("Authorization") String tokenHeader,
+			@RequestBody PostIdRequest postIdRequest
+	) {
+		String jwtToken = tokenHeader.substring(7);
+		String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+		
+		User user = userRepository.findByUsername(username);
+		Post post = postRepository.findByUserAndPostId(user, postIdRequest.getPostId());
+		
+		if(post != null) {
+			return ResponseEntity.ok(post);
 		}
 		return ResponseEntity.badRequest().body(null);
 	}
@@ -233,23 +255,6 @@ public class PostController {
 			}
 		}
 		return ResponseEntity.badRequest().body("Unable to downvote post");
-	}
-	
-	@PostMapping("/get")
-	public @ResponseBody ResponseEntity<Post> getPost(
-			@RequestHeader("Authorization") String tokenHeader,
-			@RequestBody PostIdRequest postIdRequest
-	) {
-		String jwtToken = tokenHeader.substring(7);
-		String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-		
-		User user = userRepository.findByUsername(username);
-		Post post = postRepository.findByUserAndPostId(user, postIdRequest.getPostId());
-		
-		if(post != null) {
-			return ResponseEntity.ok(post);
-		}
-		return ResponseEntity.badRequest().body(null);
 	}
 	
 	@ExceptionHandler(StorageFileNotFoundException.class)

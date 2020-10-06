@@ -90,7 +90,7 @@ url: localhost:8082/api/post/delete
 - url: localhost:8082/api/post/get/popular
 - method: POST
 - content-type: application/json
-- body: {}
+- body: {category: "funny" | "news" | "random" | "wtf"}
 - header: {Authorization: (jwtToken)}
 - returns: application/json
 
@@ -98,15 +98,23 @@ url: localhost:8082/api/post/delete
 - url: localhost:8082/api/post/get/new
 - method: POST
 - content-type: application/json
-- body: {}
+- body: {category: "funny" | "news" | "random" | "wtf"}
 - header: {Authorization: (jwtToken)}
 - returns: application/json
 
-## get posts by category
-- url: localhost:8082/api/post/get/category
+## get post by id
+- url: localhost:8082/api/post/get
 - method: POST
 - content-type: application/json
-- body: {"category": "funny"}
+- body: {"postId": (id)}
+- header: {Authorization: (jwtToken)}
+- returns: application/json
+
+## get posts by user id
+- url: localhost:8082/api/post/upvote
+- method: POST
+- content-type: application/json
+- body: {"userId": (id)}
 - header: {Authorization: (jwtToken)}
 - returns: application/json
 
@@ -118,8 +126,8 @@ url: localhost:8082/api/post/delete
 - header: {Authorization: (jwtToken)}
 - returns: application/json
 
-## get post by id
-- url: localhost:8082/api/post/get
+## user downvotes post
+- url: localhost:8082/api/post/downvote
 - method: POST
 - content-type: application/json
 - body: {"postId": (id)}

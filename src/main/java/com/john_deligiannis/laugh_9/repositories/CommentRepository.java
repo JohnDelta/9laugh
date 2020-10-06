@@ -12,7 +12,6 @@ public interface CommentRepository extends CrudRepository<Comment, Long> {
 
 	Comment findByCommentId(Long commentId);
 	
-	@Query("SELECT e FROM comment e WHERE e.post = :post")
 	List<Comment> findByPost(Post post);
 	
 }

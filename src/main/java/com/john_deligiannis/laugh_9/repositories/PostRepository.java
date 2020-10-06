@@ -14,14 +14,10 @@ public interface PostRepository extends CrudRepository<Post, Long> {
 	@Query("SELECT e FROM post e WHERE e.user = :user AND e.postId = :postId")
 	Post findByUserAndPostId(User user, Long postId);
 	
-	@Query("SELECT e FROM post e WHERE e.popularity='POPULAR'")
-	List<Post> findPopular();
-
-	@Query("SELECT e FROM post e WHERE e.popularity='NEW'")
-	List<Post> findNew();
+	@Query("SELECT e FROM post e WHERE e.popularity = :popularity AND e.category LIKE %:category%")
+	List<Post> findByPopularityAndCategory(String popularity, String category);
 	
-	@Query("SELECT e FROM post e WHERE e.category LIKE %:category%")
-	List<Post> findByCategory(String category);
+	List<Post> findByUser(User user);
 	
 	@Query("SELECT e FROM post e WHERE e.postId = :postId")
 	Post findByPostId(Long postId);

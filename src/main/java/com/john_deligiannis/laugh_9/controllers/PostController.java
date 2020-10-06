@@ -148,7 +148,7 @@ public class PostController {
 		return ResponseEntity.badRequest().body(null);
 	}
 	
-	@PostMapping("/user/get")
+	@PostMapping("/get/user")
 	public @ResponseBody ResponseEntity<List<Post>> getPost(
 			@RequestBody UsernameRequest usernameRequest
 	) {

@@ -70,6 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring()
 			.antMatchers("/api/authenticate")
 			.antMatchers("/api/user/add")
+			.antMatchers("/api/post/get/**")
 			.antMatchers("/default-images/**")
 			.antMatchers("/upload-dir/**");
 	}

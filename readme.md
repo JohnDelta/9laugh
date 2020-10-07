@@ -144,6 +144,30 @@ url: localhost:8082/api/post/delete
 - header: {Authorization: (jwtToken)}
 - returns: application/json
 
+## user comment on post
+- url: localhost:8082/api/comment/add
+- method: POST
+- content-type: application/json
+- body: {"postId": (id), "comment": (text)}
+- header: {Authorization: (jwtToken)}
+- returns: application/json
+
+## user remove comment from post
+- url: localhost:8082/api/comment/delete
+- method: POST
+- content-type: application/json
+- body: {"commentId": (id)}
+- header: {Authorization: (jwtToken)}
+- returns: application/json
+
+## get post's comments
+- url: localhost:8082/api/comment/get/all
+- method: POST
+- content-type: application/json
+- body: {}
+- header: {}
+- returns: application/json
+
 # Concept info
 
 ## Entities

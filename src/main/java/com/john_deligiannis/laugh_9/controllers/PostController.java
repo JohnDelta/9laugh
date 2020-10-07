@@ -197,13 +197,12 @@ public class PostController {
 		String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
 		
 		User user = userRepository.findByUsername(username);
-		Post post = postRepository.findByUserAndPostId(user, postIdRequest.getPostId());
+		Post post = postRepository.findByPostId(postIdRequest.getPostId());
 		
 		if(post != null && user != null) {
 			UserVote userVote = userVoteRepository.findByUserAndPost(user, post);
 			
 			if(userVote == null) {
-				
 				userVote = new UserVote();
 				userVote.setPost(post);
 				userVote.setUser(user);
@@ -241,20 +240,19 @@ public class PostController {
 		String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
 		
 		User user = userRepository.findByUsername(username);
-		Post post = postRepository.findByUserAndPostId(user, postIdRequest.getPostId());
+		Post post = postRepository.findByPostId(postIdRequest.getPostId());
 		
 		if(post != null && user != null) {
 			UserVote userVote = userVoteRepository.findByUserAndPost(user, post);
 			
 			if(userVote == null) {
-				
 				userVote = new UserVote();
 				userVote.setPost(post);
 				userVote.setUser(user);
 				userVote.setVote(Vote.DOWNVOTE.toString());
 				userVoteRepository.save(userVote);
 				
-				post.setUpvotes(post.getUpvotes() + 1);
+				post.setDownvotes(post.getDownvotes() + 1);
 				postRepository.save(post);
 				
 				return ResponseEntity.ok("Post downvoted");

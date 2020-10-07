@@ -84,7 +84,6 @@ public class CommentController {
 	
 	@PostMapping(path="/get/all")
 	public @ResponseBody ResponseEntity<List<Comment>> getAllComment(
-			@RequestHeader("Authorization") String tokenHeader,
 			@RequestBody PostIdRequest postIdRequest
 	) {
 		Post post = postRepository.findByPostId(postIdRequest.getPostId());

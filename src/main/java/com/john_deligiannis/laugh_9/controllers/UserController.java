@@ -51,7 +51,7 @@ public class UserController {
 			String hash = encoder.encode(password);
 			user.setPassword(hash);
 			
-			user.setMediaSource("default.png");
+			user.setMediaSource("user_default.png");
 			if(file != null && !file.isEmpty()) {
 				String[] args = file.getOriginalFilename().split("\\.");
 				String extension = args[1];
@@ -101,6 +101,33 @@ public class UserController {
 		}
 		
 		return ResponseEntity.badRequest().body(null);
+	}
+	
+	@PostMapping(path="/update/image")
+	public @ResponseBody ResponseEntity<String> updateUserImage (
+			@RequestHeader("Authorization") String tokenHeader,
+			@RequestParam MultipartFile file
+	) {
+		
+		String jwtToken = tokenHeader.substring(7);
+		String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+		
+		User user = userRepository.findByUsername(username);
+		
+		if(file != null && !file.isEmpty()) {
+			String[] args = file.getOriginalFilename().split("\\.");
+			String extension = args[1];
+			
+			int rnd = (int) (Math.random() * 100000 + 10000);
+			String mediaSource = username + "_user_" + rnd + "." + extension;
+			
+			storageService.store(file, mediaSource); // the previous one must be deleted but leave it for now..
+			user.setMediaSource(mediaSource);
+			userRepository.save(user);
+			
+			return ResponseEntity.ok("Image updated");
+		}
+		return ResponseEntity.badRequest().body("unable to update");
 	}
 	
 }

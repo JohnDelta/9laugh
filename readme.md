@@ -4,6 +4,9 @@ Restfull API provider for the 9laugh project
 
 9laugh's front-end web app can be found at https://github.com/JohnDelta/9laugh_webapp
 
+## About
+9laugh is an entertaining web platform in which users upload and share content. Other users can see the content and comment/like it. The content can be created by the users themselves or by other external sources.
+
 # Build Info
 
 ## Spring / Spring boot project
@@ -170,7 +173,7 @@ url: localhost:8082/api/post/delete
 - header: {}
 - returns: application/json
 
-# Concept info
+# Other concept info
 
 ## Entities
 - user (id, username, password)

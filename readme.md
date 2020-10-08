@@ -2,6 +2,8 @@
 
 Restfull API provider for the 9laugh project
 
+9laugh's front-end web app can be found at https://github.com/JohnDelta/9laugh_webapp
+
 # Build Info
 
 ## Spring / Spring boot project
